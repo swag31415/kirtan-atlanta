@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,17 +29,6 @@ document.getElementById('login').addEventListener('submit', e => {
   })
 })
 
-// Admin Controls
-onAuthStateChanged(auth, user => {
-  if (user) $('.super').show()
-  else $('.super').hide()
-})
-
-$('#logout').click(e => {
-  auth.signOut()
-  succ('Successfully Signed-out')
-})
-
 // Add Event
 const events = collection(db, 'events')
 document.getElementById('add-event').addEventListener('submit', async (e) => {
@@ -59,6 +48,7 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
         image: image
       })
       succ('Successfully added Event')
+      location.reload()
     } catch (e) {
       fail('Something went wrong')
     }
@@ -67,4 +57,25 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
 
 // Load Events
 const query = await getDocs(events)
-load_events('upcoming', query.docs.map(e => e.data()))
+load_events('upcoming', query.docs.map(e => ({...e.data(), id: e.id})))
+
+// Event Deletion
+$('.delete-event').click(function (e) {
+  deleteDoc(doc(events, this.id)).then(ref => {
+    succ('Successfully deleted event')
+    location.reload()
+  }).catch(err => {
+    fail('Something went wrong')
+  })
+})
+
+// Admin Controls
+onAuthStateChanged(auth, user => {
+  if (user) $('.super').show()
+  else $('.super').hide()
+})
+
+$('#logout').click(e => {
+  auth.signOut()
+  succ('Successfully Signed-out')
+})
