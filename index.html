@@ -68,12 +68,49 @@
       </div>
     </form>
   </div>
+  <!-- Add Event Modal -->
+  <div id="add-event-modal" class="modal">
+    <form id="add-event">
+      <div class="modal-content">
+        <h3>Add Event</h3>
+        <p>Add an Event! The event will automatally be put into the past or upcoming event category based on the event date.</p>
+        <div class="input-field">
+          <input type="text" name="name" class="validate" required>
+          <label for="name">Event Name</label>
+        </div>
+        <div class="input-field">
+          <input type="text" name="date" class="datepicker" required>
+          <label for="date">Event Date</label>
+        </div>
+        <div class="input-field">
+          <textarea name="desc" class="materialize-textarea"></textarea>
+          <label for="desc">Event Description</label>
+        </div>
+        <div class="input-field">
+          <input type="url" name="link" class="validate">
+          <label for="link">Event Link</label>
+        </div>
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Image Upload</span>
+            <input type="file" name="image" accept="image/*">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" id="close-add-event-modal" class="modal-close btn-flat">Close</a>
+        <input type="submit" id="add-event" value="Add Event" class="btn-flat"/>
+      </div>
+    </form>
+  </div>
   <!-- Page Body -->
   <main class="container">
-    <!-- TODO Fill Page Body -->
-    <h2>Upcoming Events</h2>
+    <h2>Upcoming Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
     <div id="upcoming" class="masonry ml2, mxl3"></div>
-    <h2>Past Events</h2>
+    <h2>Past Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
     <div id="passed" class="masonry ml2, mxl3"></div>
   </main>
   <!-- Footer -->

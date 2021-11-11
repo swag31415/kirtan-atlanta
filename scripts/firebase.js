@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,6 +15,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth()
+const db = getFirestore()
 
 // Login Function
 document.getElementById('login').addEventListener('submit', e => {
@@ -36,4 +38,29 @@ onAuthStateChanged(auth, user => {
 $('#logout').click(e => {
   auth.signOut()
   succ('Successfully Signed-out')
+})
+
+// Add Event
+const events = collection(db, 'events')
+document.getElementById('add-event').addEventListener('submit', async (e) => {
+  e.preventDefault()
+  toast('Adding Event...')
+  const data = new FormData(e.target)
+  let image = await read_image(data.get('image'))
+  if (image.length > 10**6) {
+    fail('Image too big (greater than 1 mb)')
+  } else {
+    try {
+      const docRef = await addDoc(events, {
+        name: data.get('name'),
+        date: data.get('date'),
+        desc: data.get('desc'),
+        link: data.get('link'),
+        image: image
+      })
+      succ('Successfully added Event')
+    } catch (e) {
+      fail('Something went wrong')
+    }
+  }
 })
