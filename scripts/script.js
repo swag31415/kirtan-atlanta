@@ -10,6 +10,23 @@ $("#nav").children().clone().appendTo("#hamborger")
 // Materialize AutoInit
 M.AutoInit();
 
+// Showdown
+var converter = new showdown.Converter({
+  noHeaderId: true,
+  headerLevelStart: 4,
+  simplifiedAutoLink: true,
+  literalMidWordUnderscores: true,
+  strikethrough: true,
+  tables: true,
+  tasklists: true,
+  emoji: true
+})
+function md2html(md) {
+  var elem = $(converter.makeHtml(md))
+  elem.find('ul').addClass('browser-default')
+  return elem
+}
+
 // 'TODO' Floats
 $(".TODO").click(() => toast("TODO, haven't implemented that yet"))
 
@@ -64,7 +81,7 @@ function get_card(event) {
   }
   let date = $('<p></p>').addClass('right').text(event.date)
   if (event.desc) {
-    let desc = $('<p></p>').text(event.desc)
+    let desc = md2html(event.desc)
     card_content.append(desc)
   } else {
     date.removeClass('right')
