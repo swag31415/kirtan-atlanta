@@ -20,9 +20,20 @@ document.getElementById('login').addEventListener('submit', e => {
   e.preventDefault()
   const data = new FormData(e.target)
   signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(cred => {
-    succ('Sucessfully Signed-in')
+    succ('Successfully Signed-in')
     document.getElementById('close-login-modal').click()
   }).catch(err => {
     fail('Invalid Login')
   })
+})
+
+// Admin Controls
+onAuthStateChanged(auth, user => {
+  if (user) $('.super').show()
+  else $('.super').hide()
+})
+
+$('#logout').click(e => {
+  auth.signOut()
+  succ('Successfully Signed-out')
 })
