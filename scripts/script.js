@@ -23,3 +23,21 @@ function read_image(file) {
     } else res('')
   })
 }
+
+// Event Loader
+function load_events(elem_id, events) {
+  let elem = document.getElementById(elem_id)
+  events.forEach(event => {
+    $(
+     `<div class="card deep-orange">
+        <div class="card-image">
+          <a href="${event.link}"><img src="${event.image}"></a>
+        </div>
+        <div class="card-content white-text">
+          <span class="card-title">${event.name}</span>
+          <p>${event.desc}</p>
+        </div>
+      </div>`
+    ).appendTo(elem)
+  })
+}

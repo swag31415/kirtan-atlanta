@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -64,3 +64,7 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
     }
   }
 })
+
+// Load Events
+const query = await getDocs(events)
+load_events('upcoming', query.docs.map(e => e.data()))
