@@ -32,6 +32,7 @@
 </head>
 
 <body class="orange lighten-4">
+  <!-- Navbar -->
   <nav class="orange darken-4">
     <div class="nav-wrapper">
       <a href="/kirtan-atlanta" class="brand-logo">Kirtan Atlanta</a>
@@ -45,8 +46,29 @@
       </ul>
     </div>
   </nav>
-  
   <ul id="hamborger" class="sidenav orange darken-4"></ul>
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal">
+    <form id="login">
+      <div class="modal-content">
+        <h3>Login</h3>
+        <p>Enter your email and password below to login and post to the website. If you don't know what this is or are not a Kirtan Atlanta Admin, please press close.</p>
+        <div class="input-field">
+          <input type="email" name="email" class="validate" required>
+          <label for="email">Email Address</label>
+        </div>
+        <div class="input-field">
+          <input type="password" name="password" class="validate" required>
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" id="close-login-modal" class="modal-close btn-flat">Close</a>
+        <input type="submit" id="login" value="Login" class="btn-flat"/>
+      </div>
+    </form>
+  </div>
+  <!-- Page Body -->
   <main class="container">
     <!-- TODO Fill Page Body -->
     <h2>Upcoming Events</h2>
@@ -54,11 +76,13 @@
     <h2>Past Events</h2>
     <div id="passed" class="masonry ml2, mxl3"></div>
   </main>
+  <!-- Footer -->
   <footer class="page-footer orange darken-4">
     <div class="row container">
       <!-- TODO: Fill in page links -->
-      <a class="white-text TODO" href="#">About us</a>
-      <a class="white-text right TODO" href="#">Contact us</a>
+      <div class="col s2"><a class="white-text TODO" href="#">About us</a></div>
+      <div class="col s2"><a class="white-text TODO" href="#">Contact us</a></div>
+      <div class="col s2 right"><a id="login" class="white-text right modal-trigger" href="#login-modal">Login</a></div>
     </div>
   </footer>
   <!-- Jquery Slim -->
@@ -68,19 +92,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
     integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q=="
     crossorigin="anonymous"></script>
-  <!-- Firebase -->
-  <script type="module" src="scripts/firebase.js"></script>
+  <!-- Our Scripts -->
+  <script src="scripts/script.js"></script>
   <!-- Event System -->
   <script src="scripts/event_loader.js"></script>
-  <!-- Our Scripts -->
-  <script>
-    // Initialize the menu
-    $("#nav").children().clone().appendTo("#hamborger")
-      .children("a").addClass("white-text")
-    $(document).ready(() => $('.sidenav').sidenav());
-    // 'TODO' Floats
-    $(".TODO").click(() => M.toast({html: "TODO, haven't implemented that yet"}))
-  </script>
+  <!-- Firebase -->
+  <script type="module" src="scripts/firebase.js"></script>
 </body>
 
 </html>

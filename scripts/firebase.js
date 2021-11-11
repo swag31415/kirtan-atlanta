@@ -14,3 +14,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth()
+
+// Login Function
+document.getElementById('login').addEventListener('submit', e => {
+  e.preventDefault()
+  const data = new FormData(e.target)
+  signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(cred => {
+    succ('Sucessfully Signed-in')
+    document.getElementById('close-login-modal').click()
+  }).catch(err => {
+    fail('Invalid Login')
+  })
+})
