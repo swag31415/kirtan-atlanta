@@ -72,8 +72,8 @@ $('.delete-event').click(function (e) {
 
 // Admin Controls
 onAuthStateChanged(auth, user => {
-  if (user) $('.super').show()
-  else $('.super').hide()
+  if (user) $('.super').removeClass('super').addClass('super-active')
+  else $('.super-active').removeClass('super-active').addClass('super')
 })
 
 $('#logout').click(e => {
