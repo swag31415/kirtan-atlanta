@@ -43,56 +43,36 @@ function read_image(file) {
 
 // Event Loader
 function get_card(event) {
-  // TODO: Neatify the Spahgettios
-    // `<div class="card orange accent-2 event">
-    //   <div class="card-image">
-    //     <a href="${event.link}"><img src="${event.image}"></a>
-    //     <a id=${event.id} class="btn-floating halfway-fab red delete-event super" href="#!"><i class="far fa-trash-alt"></i></a>
-    //   </div>
-    //   <div class="card-content white-text">
-    //     <span class="card-title">${event.name}</span>
-    //     <p>${event.desc}</p>
-    //     <p class="right">${event.date}</p>
-    //   </div>
-    // </div>`
-  let card = $('<div></div>').addClass('card orange accent-2 event')
-  let icon = $('<i></i>').addClass('far fa-trash-alt')
-  let fab = $('<a></a>').attr({id: event.id, href: '#!'}).addClass('btn-floating halfway-fab red delete-event super')
-  fab.append(icon)
-  if (event.image) {
-    let card_image = $('<div></div>').addClass('card-image')
-    let image = $('<img></img>').attr({src: event.image})
-    card_image.append(fab)
-    if (event.link) {
-      let link = $('<a></a>').attr({href: event.link})
-      card_image.append(link.append(image))
-    } else {
-      card_image.append(image)
-    }
-    card.append(card_image)
-  }
-  let card_content = $('<div></div>').addClass('card-content white-text')
-  let title = $('<span></span>').addClass('card-title').text(event.name)
-  if (!event.image && event.link) {
-    let link = $('<a></a>').attr({href: event.link})
-    card_content.append(link.append(title))
-  } else {
-    card_content.append(title)
-  }
-  let date = $('<p></p>').addClass('right').text(event.date)
-  if (event.desc) {
-    let desc = md2html(event.desc)
-    card_content.append(desc)
-  } else {
-    date.removeClass('right')
-  }
-  card_content.append(date)
-  card.append(card_content)
-  if (!event.image) {
-    fab.removeClass('halfway-fab').addClass('right')
-    title.append(fab)
-  }
-  return card
+  return ejs.render(
+   `<div class="card orange accent-2 event">
+      <% if (image) { %>
+        <div class="card-image">
+          <% if (link) { %> <a href="<%- link %>"> <% } %>
+            <img src="<%- image %>">
+          <% if (link) { %> </a> <% } %>
+          <a id=<%- id %> class="btn-floating halfway-fab red delete-event super" href="#!">
+            <i class="far fa-trash-alt"></i>
+          </a>
+        </div>
+      <% } %>
+      <div class="card-content white-text">
+        <span class="card-title">
+          <% if (!image && link) { %> <a href="<%- link %>"> <% } %>
+            <%- name %>
+          <% if (!image && link) { %> </a> <% } %>
+          <% if (!image) { %>
+            <a id=<%- id %> class="btn-floating right red delete-event super" href="#!">
+              <i class="far fa-trash-alt"></i>
+            </a>
+          <% } %>
+        </span>
+        <% if (desc) { %>
+          <%- md2html(desc).html() %>
+        <% } %>
+        <p <% if (!desc) { %> class="right" <% } %>><%- date %></p>
+      </div>
+    </div>`, event
+  )
 }
 
 const one_day = 24*60*60*1000
