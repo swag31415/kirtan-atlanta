@@ -69,14 +69,21 @@ function get_card(event) {
         <% if (desc) { %>
           <%- md2html(desc).html() %>
         <% } %>
-        <p <% if (!desc) { %> class="right" <% } %>><%- date %></p>
       </div>
-    </div>`, event
+      <div class="card-action">
+        <a href="#" class="white-text"><i class="far fa-clock"></i> <%- date %></a>
+      </div>
+    </div>`, Object.assign({
+      // This is to prevent undefined errors for optional events - add any future optional events here
+      desc: false,
+      link: false,
+      image: false
+    }, event)
   )
 }
 
 const one_day = 24*60*60*1000
-function load_events(elem_id, events) {
+function load_events(events) {
   events.forEach(event => {
     let card = get_card(event)
     if (Date.parse(event.date) > Date.now() - one_day) {

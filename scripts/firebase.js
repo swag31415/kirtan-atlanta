@@ -58,7 +58,7 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
 // Load Events
 toast('Loading Events...')
 const query = await getDocs(events)
-load_events('upcoming', query.docs.map(e => ({...e.data(), id: e.id})))
+load_events(query.docs.map(e => ({...e.data(), id: e.id})))
 
 // Event Deletion
 $('.delete-event').click(function (e) {
