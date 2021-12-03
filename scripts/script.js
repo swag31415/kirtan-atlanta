@@ -75,10 +75,15 @@ function get_card(event) {
       <div class="card-action">
         <a href="#!" class="white-text"><i class="far fa-calendar-alt"></i> <%- date %></a>
         <% if (start || end) { %>
-          <a href="#!" class="white-text"><i class="far fa-clock"></i> <%- start ? start : 'till ' %><%- end ? (start ? ' - ' + end : end) : '' %></a>
+          <a href="#!" class="white-text">
+            <i class="far fa-clock"></i>
+            <%- start ? start : 'till ' %><%- end ? (start ? ' - ' + end : end) : '' %>
+          </a>
         <% } %>
         <% if (location || address) { %>
-          <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
+          <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text">
+            <i class="fas fa-map-marker-alt"></i> <%- location || address %>
+          </a>
         <% } %>
         <% if (stream) { %>
           <a target="_blank" href="<%- stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
@@ -109,24 +114,3 @@ function load_events(events) {
     }
   })
 }
-
-let test_events = ['', 'This is a description'].flatMap(desc =>
-  ['', 'https://www.youtube.com/channel/UCyrHmRu2x_7-2aKa5DVa0zw'].flatMap(link =>
-    ['', 'https://picsum.photos/500'].map(image => 
-      ({
-        name: 'Example',
-        date: 'Feb 21, 2077',
-        desc: desc,
-        link: link,
-        image: image,
-        location: 'Temple',
-        address: 'ISKCON Atlanta',
-        stream: 'https://www.facebook.com/KirtanAtlanta/',
-        id: Math.floor(Math.random() * 500),
-        start: '11:20pm',
-        end: '11:20pm'
-      })
-    )
-  )
-)
-load_events(test_events)
