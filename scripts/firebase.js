@@ -33,36 +33,20 @@ document.getElementById('login').addEventListener('submit', e => {
 const events = collection(db, 'events')
 document.getElementById('add-event').addEventListener('submit', async (e) => {
   e.preventDefault()
-  toast('Processing...')
-  const data = new FormData(e.target)
-  let image = await read_image(data.get('image'))
-  if (image.length > 10**6) {
-    fail('Image too big (greater than 1 mb)')
+  // This requires everything with a name in the form to be
+  // essential, and have the exact same name as what you want
+  // in the database
+  const event = Object.fromEntries(new FormData(e.target).entries())
+  if (e.submitter && e.submitter.name == "update") {
+    $('#card-preview').empty().append(get_card({...event, id: 'preview'}))
   } else {
-    let event = {
-      name: data.get('name'),
-      date: data.get('date'),
-      start: data.get('start-time'),
-      end: data.get('end-time'),
-      desc: data.get('desc'),
-      link: data.get('link'),
-      stream: data.get('stream'),
-      location: data.get('location'),
-      address: data.get('address'),
-      image: image
-    }
-    console.log([...data.keys()])
-    if (e.submitter && e.submitter.name == "update") {
-      $('#card-preview').empty().append(get_card({...event, id: 'preview'}))
-    } else {
-      toast('Adding Event...')
-      try {
-        const docRef = await addDoc(events, event)
-        succ('Successfully added Event')
-        location.reload()
-      } catch (e) {
-        fail('Something went wrong')
-      }
+    toast('Adding Event...')
+    try {
+      const docRef = await addDoc(events, event)
+      succ('Successfully added Event')
+      location.reload()
+    } catch (e) {
+      fail('Something went wrong')
     }
   }
 })

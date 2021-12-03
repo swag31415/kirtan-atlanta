@@ -41,6 +41,18 @@ function read_image(file) {
   })
 }
 
+// Read Images as they get uploaded
+$('#event-image-upload').change(async (e) => {
+  toast('Loading Image...')
+  let image = await read_image(e.target.files[0] || '')
+  if (image) if (image.length < 10**6) {
+    $('#event-image-data').val(image)
+    succ('Image loaded')
+  } else {
+    fail('Image too big (greater than 1 mb)')
+  }
+})
+
 // Event Loader
 function get_card(event) {
   return ejs.render(

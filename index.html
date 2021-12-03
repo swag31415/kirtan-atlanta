@@ -95,12 +95,12 @@
             </div>
             <div class="row">
               <div class="input-field col s12 m6">
-                <input type="text" name="start-time" class="timepicker">
-                <label for="start-time">Start Time</label>
+                <input type="text" name="start" class="timepicker">
+                <label for="start">Start Time</label>
               </div>
               <div class="input-field col s12 m6">
-                <input type="text" name="end-time" class="timepicker">
-                <label for="end-time">End Time</label>
+                <input type="text" name="end" class="timepicker">
+                <label for="end">End Time</label>
               </div>
             </div>
             <div class="input-field">
@@ -128,7 +128,8 @@
             <div class="file-field input-field">
               <div class="btn">
                 <span>Image Upload</span>
-                <input type="file" name="image" accept="image/*">
+                <input id="event-image-upload" type="file" accept="image/*">
+                <input type="hidden" id="event-image-data" name="image" value="">
               </div>
               <div class="file-path-wrapper">
                 <input class="file-path validate" type="text">
