@@ -47,7 +47,7 @@ function get_card(event) {
    `<div class="card orange accent-2 event">
       <% if (image) { %>
         <div class="card-image">
-          <% if (link || stream) { %> <a href="<%- link || stream %>"> <% } %>
+          <% if (link || stream) { %> <a target="_blank" href="<%- link || stream %>"> <% } %>
             <img src="<%- image %>">
           <% if (link || stream) { %> </a> <% } %>
           <% if (id != 'preview') { %>
@@ -59,7 +59,7 @@ function get_card(event) {
       <% } %>
       <div class="card-content white-text">
         <span class="card-title">
-          <% if (!image && link) { %> <a href="<%- link %>"> <% } %>
+          <% if (!image && link) { %> <a target="_blank" href="<%- link %>"> <% } %>
             <%- name %>
           <% if (!image && link) { %> </a> <% } %>
           <% if (!image && id != 'preview') { %>
@@ -78,10 +78,10 @@ function get_card(event) {
           <a href="#!" class="white-text"><i class="far fa-clock"></i> <%- start ? start : 'till ' %><%- end ? (start ? ' - ' + end : end) : '' %></a>
         <% } %>
         <% if (location || address) { %>
-          <a href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
+          <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
         <% } %>
         <% if (stream) { %>
-          <a href="<%- stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
+          <a target="_blank" href="<%- stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
         <% } %>
       </div>
     </div>`, Object.assign({
