@@ -47,9 +47,9 @@ function get_card(event) {
    `<div class="card orange accent-2 event">
       <% if (image) { %>
         <div class="card-image">
-          <% if (link) { %> <a href="<%- link %>"> <% } %>
+          <% if (link || stream) { %> <a href="<%- link || stream %>"> <% } %>
             <img src="<%- image %>">
-          <% if (link) { %> </a> <% } %>
+          <% if (link || stream) { %> </a> <% } %>
           <% if (id != 'preview') { %>
             <a id=<%- id %> class="btn-floating halfway-fab red delete-event super" href="#!">
               <i class="far fa-trash-alt"></i>
@@ -77,6 +77,9 @@ function get_card(event) {
         <% if (location || address) { %>
           <a href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
         <% } %>
+        <% if (stream) { %>
+          <a href="<%- stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
+        <% } %>
       </div>
     </div>`, Object.assign({
       // This is to prevent undefined errors for optional events - add any future optional events here
@@ -84,7 +87,8 @@ function get_card(event) {
       link: false,
       image: false,
       location: false,
-      address: false
+      address: false,
+      stream: false
     }, event)
   )
 }
@@ -112,6 +116,7 @@ let test_events = ['', 'This is a description'].flatMap(desc =>
         image: image,
         location: 'Temple',
         address: 'ISKCON Atlanta',
+        stream: 'https://www.facebook.com/KirtanAtlanta/',
         id: Math.floor(Math.random() * 500)
       })
     )

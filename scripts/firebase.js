@@ -44,6 +44,7 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
       date: data.get('date'),
       desc: data.get('desc'),
       link: data.get('link'),
+      stream: data.get('stream'),
       location: data.get('location'),
       address: data.get('address'),
       image: image
