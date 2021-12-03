@@ -33,24 +33,33 @@ document.getElementById('login').addEventListener('submit', e => {
 const events = collection(db, 'events')
 document.getElementById('add-event').addEventListener('submit', async (e) => {
   e.preventDefault()
-  toast('Adding Event...')
+  toast('Processing...')
   const data = new FormData(e.target)
   let image = await read_image(data.get('image'))
   if (image.length > 10**6) {
     fail('Image too big (greater than 1 mb)')
   } else {
-    try {
-      const docRef = await addDoc(events, {
-        name: data.get('name'),
-        date: data.get('date'),
-        desc: data.get('desc'),
-        link: data.get('link'),
-        image: image
-      })
-      succ('Successfully added Event')
-      location.reload()
-    } catch (e) {
-      fail('Something went wrong')
+    let event = {
+      name: data.get('name'),
+      date: data.get('date'),
+      desc: data.get('desc'),
+      link: data.get('link'),
+      location: data.get('location'),
+      address: data.get('address'),
+      image: image
+    }
+    console.log([...data.keys()])
+    if (e.submitter && e.submitter.name == "update") {
+      $('#card-preview').empty().append(get_card({...event, id: 'preview'}))
+    } else {
+      toast('Adding Event...')
+      try {
+        const docRef = await addDoc(events, event)
+        succ('Successfully added Event')
+        location.reload()
+      } catch (e) {
+        fail('Something went wrong')
+      }
     }
   }
 })

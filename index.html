@@ -77,35 +77,51 @@
       <div class="modal-content">
         <h3>Add Event</h3>
         <p>Add an Event! The event will automatally be put into the past or upcoming event category based on the event date.</p>
-        <div class="input-field">
-          <input type="text" name="name" class="validate" required>
-          <label for="name">Event Name</label>
-        </div>
-        <div class="input-field">
-          <input type="text" name="date" class="datepicker" required>
-          <label for="date">Event Date</label>
-        </div>
-        <div class="input-field">
-          <textarea name="desc" class="materialize-textarea"></textarea>
-          <label for="desc">Event Description</label>
-        </div>
-        <div class="input-field">
-          <input type="url" name="link" class="validate">
-          <label for="link">Event Link</label>
-        </div>
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Image Upload</span>
-            <input type="file" name="image" accept="image/*">
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
+        <div class="row">
+          <div id="card-preview" class="col s12 l6"></div>
+          <div class="col s12 l6">
+            <div class="input-field">
+              <input type="text" name="name" class="validate" required>
+              <label for="name">Event Name</label>
+            </div>
+            <div class="input-field">
+              <input type="text" name="date" class="datepicker" required>
+              <label for="date">Event Date</label>
+            </div>
+            <div class="input-field">
+              <textarea name="desc" class="materialize-textarea"></textarea>
+              <label for="desc">Event Description</label>
+            </div>
+            <div class="input-field">
+              <input type="url" name="link" class="validate">
+              <label for="link">Event Link</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <input type="text" name="location">
+                <label for="location">Location</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input type="text" name="address">
+                <label for="address">Address</label>
+              </div>
+            </div>
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>Image Upload</span>
+                <input type="file" name="image" accept="image/*">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <a href="#!" class="modal-close btn-flat">Close</a>
-        <input type="submit" value="Add Event" class="btn-flat"/>
+        <input name="update" type="submit" value="Update Preview" class="btn-flat"/>
+        <input name="submit" type="submit" value="Add Event" class="btn-flat"/>
       </div>
     </form>
   </div>

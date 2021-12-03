@@ -22,7 +22,7 @@ var converter = new showdown.Converter({
   emoji: true
 })
 function md2html(md) {
-  var elem = $(converter.makeHtml(md))
+  var elem = $('<div></div>').html(converter.makeHtml(md))
   elem.find('ul').addClass('browser-default')
   return elem
 }
@@ -50,9 +50,11 @@ function get_card(event) {
           <% if (link) { %> <a href="<%- link %>"> <% } %>
             <img src="<%- image %>">
           <% if (link) { %> </a> <% } %>
-          <a id=<%- id %> class="btn-floating halfway-fab red delete-event super" href="#!">
-            <i class="far fa-trash-alt"></i>
-          </a>
+          <% if (id != 'preview') { %>
+            <a id=<%- id %> class="btn-floating halfway-fab red delete-event super" href="#!">
+              <i class="far fa-trash-alt"></i>
+            </a>
+          <% } %>
         </div>
       <% } %>
       <div class="card-content white-text">
@@ -60,7 +62,7 @@ function get_card(event) {
           <% if (!image && link) { %> <a href="<%- link %>"> <% } %>
             <%- name %>
           <% if (!image && link) { %> </a> <% } %>
-          <% if (!image) { %>
+          <% if (!image && id != 'preview') { %>
             <a id=<%- id %> class="btn-floating right red delete-event super" href="#!">
               <i class="far fa-trash-alt"></i>
             </a>
@@ -72,12 +74,17 @@ function get_card(event) {
       </div>
       <div class="card-action">
         <a href="#" class="white-text"><i class="far fa-clock"></i> <%- date %></a>
+        <% if (location || address) { %>
+          <a href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
+        <% } %>
       </div>
     </div>`, Object.assign({
       // This is to prevent undefined errors for optional events - add any future optional events here
       desc: false,
       link: false,
-      image: false
+      image: false,
+      location: false,
+      address: false
     }, event)
   )
 }
@@ -93,3 +100,21 @@ function load_events(events) {
     }
   })
 }
+
+let test_events = ['', 'This is a description'].flatMap(desc =>
+  ['', 'https://www.youtube.com/channel/UCyrHmRu2x_7-2aKa5DVa0zw'].flatMap(link =>
+    ['', 'https://picsum.photos/500'].map(image => 
+      ({
+        name: 'Example',
+        date: 'Feb 21, 2077',
+        desc: desc,
+        link: link,
+        image: image,
+        location: 'Temple',
+        address: 'ISKCON Atlanta',
+        id: Math.floor(Math.random() * 500)
+      })
+    )
+  )
+)
+load_events(test_events)
