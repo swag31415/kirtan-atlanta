@@ -26,7 +26,7 @@
     }
     /* Lighter links */
     a {
-      color: cyan;
+      color: #4ff;
     }
     /* My Supersuit */
     .super {
@@ -76,7 +76,12 @@
     <form id="add-event">
       <div class="modal-content">
         <h3>Add Event</h3>
-        <p>Add an Event! The event will automatally be put into the past or upcoming event category based on the event date.</p>
+        <p>Add an Event! Here are some tips:</p>
+        <ul class="browser-default">
+          <li>Everything except the Name and Date is optional.</li>
+          <li>Click "Update Preview" to see a preview.</li>
+          <li>The Description supports <a href="https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" class="blue-text">Markdown Syntax</a>, it's really nice!</li>
+        </ul>
         <div class="row">
           <div id="card-preview" class="col s12 l6"></div>
           <div class="col s12 l6">
@@ -143,7 +148,7 @@
   <main class="container">
     <h2>Upcoming Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
     <div id="upcoming" class="masonry ml2, mxl3"></div>
-    <h2>Past Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
+    <h2>Past Events</h2>
     <div id="passed" class="masonry ml2, mxl3"></div>
   </main>
   <!-- Footer -->
