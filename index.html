@@ -40,7 +40,7 @@
   <nav class="orange darken-4">
     <div class="nav-wrapper">
       <a href="/" class="brand-logo">Kirtan Atlanta</a>
-      <a href="#" data-target="hamborger" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
+      <a href="#!" data-target="hamborger" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
       <ul id="nav" class="right hide-on-med-and-down">
         <li><a href="https://www.facebook.com/KirtanAtlanta/"><i class="fab fa-facebook-square"></i> Facebook</a></li>
         <li><a href="https://www.instagram.com/kirtan_atlanta/"><i class="fab fa-instagram"></i> Instagram</a></li>
@@ -87,6 +87,16 @@
             <div class="input-field">
               <input type="text" name="date" class="datepicker" required>
               <label for="date">Event Date</label>
+            </div>
+            <div class="row">
+              <div class="input-field col s12 m6">
+                <input type="text" name="start-time" class="timepicker">
+                <label for="start-time">Start Time</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input type="text" name="end-time" class="timepicker">
+                <label for="end-time">End Time</label>
+              </div>
             </div>
             <div class="input-field">
               <textarea name="desc" class="materialize-textarea"></textarea>
@@ -140,8 +150,8 @@
   <footer class="page-footer orange darken-4">
     <div class="row container">
       <!-- TODO: Fill in page links -->
-      <div class="col s2"><a class="white-text TODO" href="#">About us</a></div>
-      <div class="col s2"><a class="white-text TODO" href="#">Contact us</a></div>
+      <div class="col s2"><a class="white-text TODO" href="#!">About us</a></div>
+      <div class="col s2"><a class="white-text TODO" href="#!">Contact us</a></div>
       <div class="col s2 right"><a id="login" class="white-text right modal-trigger" href="#login-modal">Login</a></div>
       <div class="col s2 right"><a id="logout" class="white-text right super" href="#!">Log out</a></div>
     </div>

@@ -73,7 +73,10 @@ function get_card(event) {
         <% } %>
       </div>
       <div class="card-action">
-        <a href="#" class="white-text"><i class="far fa-clock"></i> <%- date %></a>
+        <a href="#!" class="white-text"><i class="far fa-calendar-alt"></i> <%- date %></a>
+        <% if (start || end) { %>
+          <a href="#!" class="white-text"><i class="far fa-clock"></i> <%- start ? start : 'till ' %><%- end ? (start ? ' - ' + end : end) : '' %></a>
+        <% } %>
         <% if (location || address) { %>
           <a href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text"><i class="fas fa-map-marker-alt"></i> <%- location || address %></a>
         <% } %>
@@ -88,7 +91,9 @@ function get_card(event) {
       image: false,
       location: false,
       address: false,
-      stream: false
+      stream: false,
+      start: false,
+      end: false,
     }, event)
   )
 }
@@ -117,7 +122,9 @@ let test_events = ['', 'This is a description'].flatMap(desc =>
         location: 'Temple',
         address: 'ISKCON Atlanta',
         stream: 'https://www.facebook.com/KirtanAtlanta/',
-        id: Math.floor(Math.random() * 500)
+        id: Math.floor(Math.random() * 500),
+        start: '11:20pm',
+        end: '11:20pm'
       })
     )
   )

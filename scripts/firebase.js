@@ -42,6 +42,8 @@ document.getElementById('add-event').addEventListener('submit', async (e) => {
     let event = {
       name: data.get('name'),
       date: data.get('date'),
+      start: data.get('start-time'),
+      end: data.get('end-time'),
       desc: data.get('desc'),
       link: data.get('link'),
       stream: data.get('stream'),
