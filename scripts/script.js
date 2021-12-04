@@ -42,16 +42,24 @@ function read_image(file) {
 }
 
 // Read Images as they get uploaded
-$('#event-image-upload').change(async (e) => {
+$('.event-image-upload').change(async function (e) {
   toast('Loading Image...')
-  let image = await read_image(e.target.files[0] || '')
+  let image = await read_image(this.files[0] || '')
   if (image) if (image.length < 10**6) {
-    $('#event-image-data').val(image)
+    $(this).parent().find('.event-image-data').val(image).trigger('change')
     succ('Image loaded')
   } else {
     fail('Image too big (greater than 1 mb)')
   }
 })
+
+// For filling forms
+function prefill(form, data) {
+  Object.entries(data).forEach(([input_name, value]) => {
+    $(form).find(`textarea[name=${input_name}],input[name=${input_name}]:not([type=file])`).val(value).trigger('change')
+    $(form).find(`label[for=${input_name}]`).addClass('active')
+  })
+}
 
 // Event Loader
 function get_card(event) {
@@ -63,8 +71,8 @@ function get_card(event) {
             <img src="<%- image %>">
           <% if (link || stream) { %> </a> <% } %>
           <% if (id != 'preview') { %>
-            <a id=<%- id %> class="btn-floating halfway-fab red delete-event super" href="#!">
-              <i class="far fa-trash-alt"></i>
+            <a id=<%- id %> class="btn-floating halfway-fab super mod-event" href="#!">
+              <i class="fas fa-pencil-alt"></i>
             </a>
           <% } %>
         </div>
@@ -75,8 +83,8 @@ function get_card(event) {
             <%- name %>
           <% if (!image && link) { %> </a> <% } %>
           <% if (!image && id != 'preview') { %>
-            <a id=<%- id %> class="btn-floating right red delete-event super" href="#!">
-              <i class="far fa-trash-alt"></i>
+            <a id=<%- id %> class="btn-floating right super mod-event" href="#!">
+              <i class="fas fa-pencil-alt"></i>
             </a>
           <% } %>
         </span>
