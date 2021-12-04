@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { getFirestore, collection, doc, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { getFirestore, collection, doc, addDoc, getDoc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -18,56 +18,66 @@ const auth = getAuth()
 const db = getFirestore()
 
 // Login Function
-document.getElementById('login').addEventListener('submit', e => {
+$('#login').submit(e => {
   e.preventDefault()
   const data = new FormData(e.target)
   signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(cred => {
     succ('Successfully Signed-in')
-    document.getElementById('close-login-modal').click()
-  }).catch(err => {
-    fail('Invalid Login')
-  })
+    $('#login-modal').modal('close')
+  }).catch(err => fail('Invalid Login'))
 })
 
-// Add Event
+// Preview Handlers
 const events = collection(db, 'events')
-document.getElementById('add-event').addEventListener('submit', async (e) => {
+$('#add-event,#mod-event').change(e => {
+  const event = Object.fromEntries(new FormData(e.currentTarget).entries())
+  $(e.currentTarget).find('.card-preview').empty().append(get_card({...event, id: 'preview'}))
+})
+// Add Event
+$('#add-event').submit(e => {
   e.preventDefault()
+  // This requires everything with a name in the form to be
+  // essential, and have the exact same name as what you want
+  // in the database
+  const event = Object.fromEntries(new FormData(e.target).entries())
   toast('Adding Event...')
-  const data = new FormData(e.target)
-  let image = await read_image(data.get('image'))
-  if (image.length > 10**6) {
-    fail('Image too big (greater than 1 mb)')
-  } else {
-    try {
-      const docRef = await addDoc(events, {
-        name: data.get('name'),
-        date: data.get('date'),
-        desc: data.get('desc'),
-        link: data.get('link'),
-        image: image
-      })
-      succ('Successfully added Event')
-      location.reload()
-    } catch (e) {
-      fail('Something went wrong')
-    }
-  }
+  addDoc(events, event).then(ref => {
+    succ('Successfully added Event')
+    location.reload()
+  }).catch(err => fail('Something went wrong'))
 })
 
 // Load Events
 toast('Loading Events...')
 const query = await getDocs(events)
-load_events('upcoming', query.docs.map(e => ({...e.data(), id: e.id})))
+load_events(query.docs.map(e => ({...e.data(), id: e.id})))
 
 // Event Deletion
-$('.delete-event').click(function (e) {
-  deleteDoc(doc(events, this.id)).then(ref => {
+$('#delete-event').click(function (e) {
+  toast('Removing Event...')
+  deleteDoc(doc(events, mod_event_id)).then(ref => {
     succ('Successfully deleted event')
     location.reload()
-  }).catch(err => {
-    fail('Something went wrong')
-  })
+  }).catch(err => fail('Something went wrong'))
+})
+
+// Event Modification
+var mod_event_id = ''
+$('.mod-event').click(function (e) {
+  getDoc(doc(events, this.id)).then(doc => {
+    prefill($('#mod-event'), doc.data())
+    mod_event_id = this.id
+    $('#mod-event-modal').modal('open')
+  }).catch(err => fail('Something went wrong'))
+})
+$('#mod-event').submit(e => {
+  e.preventDefault()
+  toast('Updating Event...')
+  const event = Object.fromEntries(new FormData(e.target).entries())
+  setDoc(doc(events, mod_event_id), event).then(ref => {
+    succ('Modified Event Successfully')
+    location.reload()
+  }).catch(err => fail('Something went wrong'))
 })
 
 // Admin Controls

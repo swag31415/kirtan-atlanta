@@ -26,7 +26,7 @@
     }
     /* Lighter links */
     a {
-      color: cyan;
+      color: #4ff;
     }
     /* My Supersuit */
     .super {
@@ -40,12 +40,12 @@
   <nav class="orange darken-4">
     <div class="nav-wrapper">
       <a href="/" class="brand-logo">Kirtan Atlanta</a>
-      <a href="#" data-target="hamborger" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
+      <a href="#!" data-target="hamborger" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
       <ul id="nav" class="right hide-on-med-and-down">
-        <li><a href="https://www.facebook.com/KirtanAtlanta/"><i class="fab fa-facebook-square"></i> Facebook</a></li>
-        <li><a href="https://www.instagram.com/kirtan_atlanta/"><i class="fab fa-instagram"></i> Instagram</a></li>
-        <li><a href="https://www.youtube.com/channel/UCyrHmRu2x_7-2aKa5DVa0zw"><i class="fab fa-youtube"></i> YouTube</a></li>
-        <li><a href="https://chat.whatsapp.com/IYrxzty65tx820m2423eUG"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+        <li><a target="_blank" href="https://www.facebook.com/KirtanAtlanta/"><i class="fab fa-facebook-square"></i> Facebook</a></li>
+        <li><a target="_blank" href="https://www.instagram.com/kirtan_atlanta/"><i class="fab fa-instagram"></i> Instagram</a></li>
+        <li><a target="_blank" href="https://www.youtube.com/channel/UCyrHmRu2x_7-2aKa5DVa0zw"><i class="fab fa-youtube"></i> YouTube</a></li>
+        <li><a target="_blank" href="https://chat.whatsapp.com/IYrxzty65tx820m2423eUG"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
       </ul>
     </div>
   </nav>
@@ -71,12 +71,15 @@
       </div>
     </form>
   </div>
-  <!-- Add Event Modal -->
-  <div id="add-event-modal" class="modal">
-    <form id="add-event">
-      <div class="modal-content">
-        <h3>Add Event</h3>
-        <p>Add an Event! The event will automatally be put into the past or upcoming event category based on the event date.</p>
+  <!-- Common elements in the add and modify event modals -->
+  <template id="card-form-common">
+    <ul class="browser-default">
+      <li>Everything except the Name and Date is optional.</li>
+      <li>The Description supports <a target="_blank" href="https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" class="blue-text">Markdown Syntax</a>, it's really nice!</li>
+    </ul>
+    <div class="row">
+      <div class="card-preview col s12 l6"></div>
+      <div class="col s12 l6">
         <div class="input-field">
           <input type="text" name="name" class="validate" required>
           <label for="name">Event Name</label>
@@ -85,9 +88,33 @@
           <input type="text" name="date" class="datepicker" required>
           <label for="date">Event Date</label>
         </div>
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input type="text" name="start" class="timepicker">
+            <label for="start">Start Time</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <input type="text" name="end" class="timepicker">
+            <label for="end">End Time</label>
+          </div>
+        </div>
         <div class="input-field">
           <textarea name="desc" class="materialize-textarea"></textarea>
           <label for="desc">Event Description</label>
+        </div>
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input type="text" name="location">
+            <label for="location">Location</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <input type="text" name="address">
+            <label for="address">Address</label>
+          </div>
+        </div>
+        <div class="input-field">
+          <input type="url" name="stream" class="validate">
+          <label for="stream">Stream Link</label>
         </div>
         <div class="input-field">
           <input type="url" name="link" class="validate">
@@ -96,16 +123,42 @@
         <div class="file-field input-field">
           <div class="btn">
             <span>Image Upload</span>
-            <input type="file" name="image" accept="image/*">
+            <input class="event-image-upload" type="file" accept="image/*">
+            <input type="hidden" class="event-image-data" name="image" value="">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
           </div>
         </div>
       </div>
+    </div>
+  </template>
+  <!-- Add Event Modal -->
+  <div id="add-event-modal" class="modal">
+    <form id="add-event">
+      <div class="modal-content">
+        <h3>Add Event</h3>
+        <p>Add an Event! Here are some tips:</p>
+        <template-insert target="card-form-common"></template-insert>
+      </div>
       <div class="modal-footer">
         <a href="#!" class="modal-close btn-flat">Close</a>
-        <input type="submit" value="Add Event" class="btn-flat"/>
+        <input name="submit" type="submit" value="Add Event" class="btn-flat"/>
+      </div>
+    </form>
+  </div>
+  <!-- Modify Event Modal -->
+  <div id="mod-event-modal" class="modal">
+    <form id="mod-event">
+      <div class="modal-content">
+        <h3>Modify Element</h3>
+        <p>Modify an element! Here are some reminders</p>
+        <template-insert target="card-form-common"></template-insert>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" id="delete-event" class="btn red left">Delete</a>
+        <a href="#!" class="modal-close btn-flat">Close</a>
+        <input name="modify" type="submit" value="Modify Event" class="btn-flat"/>
       </div>
     </form>
   </div>
@@ -113,19 +166,27 @@
   <main class="container">
     <h2>Upcoming Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
     <div id="upcoming" class="masonry ml2, mxl3"></div>
-    <h2>Past Events <a class="btn orange darken-4 modal-trigger super" href="#add-event-modal">Add Event</a></h2>
+    <h2>Past Events</h2>
     <div id="passed" class="masonry ml2, mxl3"></div>
   </main>
   <!-- Footer -->
   <footer class="page-footer orange darken-4">
     <div class="row container">
       <!-- TODO: Fill in page links -->
-      <div class="col s2"><a class="white-text TODO" href="#">About us</a></div>
-      <div class="col s2"><a class="white-text TODO" href="#">Contact us</a></div>
+      <div class="col s2"><a class="white-text TODO" href="#!">About us</a></div>
+      <div class="col s2"><a class="white-text TODO" href="#!">Contact us</a></div>
       <div class="col s2 right"><a id="login" class="white-text right modal-trigger" href="#login-modal">Login</a></div>
       <div class="col s2 right"><a id="logout" class="white-text right super" href="#!">Log out</a></div>
     </div>
   </footer>
+  <!-- For templating -->
+  <script>
+    customElements.define('template-insert', class extends HTMLElement { constructor() {
+      super()
+      let template = document.getElementById(this.getAttribute('target'))
+      this.innerHTML = template.innerHTML
+    }})
+  </script>
   <!-- Jquery Slim -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
