@@ -23,7 +23,7 @@ $('#login').submit(e => {
   const data = new FormData(e.target)
   signInWithEmailAndPassword(auth, data.get('email'), data.get('password')).then(cred => {
     succ('Successfully Signed-in')
-    $('#close-login-modal').click()
+    $('#login-modal').modal('close')
   }).catch(err => fail('Invalid Login'))
 })
 
