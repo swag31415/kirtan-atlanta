@@ -61,17 +61,37 @@ function prefill(form, data) {
   })
 }
 
+// Generates a google calendar link
+function get_google_calendar(event) {
+  function format_date(date, start, end) {
+    let isof = dstr => new Date(dstr).toISOString().replace(/-|:|\./g, '')
+    if (!date) return '#!'
+    if (!start && !end)
+      return isof(date).split('T')[0] + '/' + isof(Date.parse(date) + 24*60*60*1000).split('T')[0]
+    return isof(date + ' ' + (start || '12:00 AM')) + '/' + isof(date + ' ' + (end || '11:59 PM'))
+  }
+  let params = {
+    action: 'TEMPLATE',
+    text: event.name || '',
+    details: event.desc || '',
+    location: event.address || event.location || '',
+    trp: true,
+    dates: format_date(event.date, event.start, event.end)
+  }
+  return 'https://calendar.google.com/calendar/render?' + $.param(params)
+}
+
 // Event Loader
 function get_card(event) {
   return ejs.render(
    `<div class="card orange accent-2 event">
-      <% if (image) { %>
+      <% if (event.image) { %>
         <div class="card-image">
-          <% if (link || stream) { %> <a target="_blank" href="<%- link || stream %>"> <% } %>
-            <img src="<%- image %>">
-          <% if (link || stream) { %> </a> <% } %>
-          <% if (id != 'preview') { %>
-            <a id=<%- id %> class="btn-floating halfway-fab super mod-event" href="#!">
+          <% if (event.link || event.stream) { %> <a target="_blank" href="<%- event.link || event.stream %>"> <% } %>
+            <img src="<%- event.image %>">
+          <% if (event.link || event.stream) { %> </a> <% } %>
+          <% if (event.id != 'preview') { %>
+            <a id="<%- event.id %>" class="btn-floating halfway-fab super mod-event" href="#!">
               <i class="fas fa-pencil-alt"></i>
             </a>
           <% } %>
@@ -79,47 +99,37 @@ function get_card(event) {
       <% } %>
       <div class="card-content white-text">
         <span class="card-title">
-          <% if (!image && link) { %> <a target="_blank" href="<%- link %>"> <% } %>
-            <%- name %>
-          <% if (!image && link) { %> </a> <% } %>
-          <% if (!image && id != 'preview') { %>
-            <a id=<%- id %> class="btn-floating right super mod-event" href="#!">
+          <% if (!event.image && event.link) { %> <a target="_blank" href="<%- event.link %>"> <% } %>
+            <%- event.name %>
+          <% if (!event.image && event.link) { %> </a> <% } %>
+          <% if (!event.image && event.id != 'preview') { %>
+            <a id="<%- event.id %>" class="btn-floating right super mod-event" href="#!">
               <i class="fas fa-pencil-alt"></i>
             </a>
           <% } %>
         </span>
-        <% if (desc) { %>
-          <%- md2html(desc).html() %>
+        <% if (event.desc) { %>
+          <%- md2html(event.desc).html() %>
         <% } %>
       </div>
       <div class="card-action">
-        <a href="#!" class="white-text"><i class="far fa-calendar-alt"></i> <%- date %></a>
-        <% if (start || end) { %>
-          <a href="#!" class="white-text">
+        <a target="_blank" href="<%- get_google_calendar(event) %>" class="white-text"><i class="far fa-calendar-alt"></i> <%- event.date %></a>
+        <% if (event.start || event.end) { %>
+          <a target="_blank" href="<%- get_google_calendar(event) %>" class="white-text">
             <i class="far fa-clock"></i>
-            <%- start ? start : 'till ' %><%- end ? (start ? ' - ' + end : end) : '' %>
+            <%- event.start ? event.start : 'till ' %><%- event.end ? (event.start ? ' - ' + event.end : event.end) : '' %>
           </a>
         <% } %>
-        <% if (location || address) { %>
-          <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(address || location) %>" class="white-text">
-            <i class="fas fa-map-marker-alt"></i> <%- location || address %>
+        <% if (event.location || event.address) { %>
+          <a target="_blank" href="https://www.google.com/maps/search/?api=1&query=<%- encodeURI(event.address || event.location) %>" class="white-text">
+            <i class="fas fa-map-marker-alt"></i> <%- event.location || event.address %>
           </a>
         <% } %>
-        <% if (stream) { %>
-          <a target="_blank" href="<%- stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
+        <% if (event.stream) { %>
+          <a target="_blank" href="<%- event.stream %>" class="white-text"><i class="fas fa-video"></i> Stream</a>
         <% } %>
       </div>
-    </div>`, Object.assign({
-      // This is to prevent undefined errors for optional events - add any future optional events here
-      desc: false,
-      link: false,
-      image: false,
-      location: false,
-      address: false,
-      stream: false,
-      start: false,
-      end: false,
-    }, event)
+    </div>`, {event: event}
   )
 }
 
