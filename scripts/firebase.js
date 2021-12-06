@@ -1,6 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
-import { getFirestore, collection, doc, addDoc, getDoc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+import { getFirestore, collection, doc, addDoc, getDoc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js";
+import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -9,13 +10,15 @@ const firebaseConfig = {
   projectId: "kirtan-atlanta",
   storageBucket: "kirtan-atlanta.appspot.com",
   messagingSenderId: "875953622458",
-  appId: "1:875953622458:web:350be0dc27fd2191dba183"
+  appId: "1:875953622458:web:350be0dc27fd2191dba183",
+  measurementId: "G-EGZ8KEP4M4"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth()
 const db = getFirestore()
+const analytics = getAnalytics(app);
 
 // Login Function
 $('#login').submit(e => {
