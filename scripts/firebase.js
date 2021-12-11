@@ -52,8 +52,9 @@ $('#add-event').submit(e => {
 
 // Load Events
 toast('Loading Events...')
-const query = await getDocs(events)
-load_events(query.docs.map(e => ({...e.data(), id: e.id})))
+getDocs(events).then(query => {
+  load_events(query.docs.map(e => ({...e.data(), id: e.id})))
+})
 
 // Event Deletion
 $('#delete-event').click(function (e) {
