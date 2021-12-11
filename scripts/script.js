@@ -1,7 +1,7 @@
 // Toasts
-const toast = (msg, classes = "") => M.toast({html: msg, classes: classes})
-const succ = (msg) => toast(msg, "green")
-const fail = (msg) => toast(msg, "red")
+var toast = (msg, classes = "") => M.toast({html: msg, classes: classes})
+var succ = (msg) => toast(msg, "green")
+var fail = (msg) => toast(msg, "red")
 
 // Initialize the menu
 $("#nav").children().clone().appendTo("#hamborger")
